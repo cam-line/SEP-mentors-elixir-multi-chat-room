@@ -1,15 +1,22 @@
 defmodule MultiRoomChat.Message do
   @moduledoc """
   Represents a message in the chat system.
+  Sender is a MultiRoomChat.User struct.
   """
 
   defstruct [
-    :sender,
+    :sender,    # MultiRoomChat.User
     :content,
     :timestamp
   ]
 
-  def format(%__MODULE__{sender: s, content: c, timestamp: t}) do
-    "[#{t}] #{s}: #{c}"
+  @type t :: %__MODULE__{
+    sender: MultiRoomChat.User.t(),
+    content: String.t(),
+    timestamp: DateTime.t()
+  }
+
+  def format(%__MODULE__{sender: %MultiRoomChat.User{name: name}, content: c, timestamp: t}) do
+    "[#{t}] #{name}: #{c}"
   end
 end
