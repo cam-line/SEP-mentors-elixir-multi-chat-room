@@ -13,8 +13,8 @@ defmodule ChatRoom do
     GenServer.cast(room, {:leave, user})
   end
 
-  def send_message(room, user, message) do
-    GenServer.cast(room, {:send_message, user, message})
+  def send_message(room, %MultiRoomChat.Message{} = message) do
+    GenServer.cast(room, {:send_message, message})
   end
 
   def get_users(room) do
@@ -53,9 +53,11 @@ defmodule ChatRoom do
   end
 
   @impl true
-  def handle_cast({:send_message, message}, state) do
-    if (message.sender in state.users) do
-      new_state = %{state | messages: [message | state.messages]}
+  def handle_cast({:send_message, message = %MultiRoomChat.Message{sender: sender, content: content, timestamp: timestamp}}, state) do
+    if (sender in state.users) do
+      formatted = MultiRoomChat.Message.format(message)
+      IO.puts(formatted)
+      new_state = %{state | messages: [formatted | state.messages]}
       {:noreply, new_state}
     else
       {:noreply, state}
