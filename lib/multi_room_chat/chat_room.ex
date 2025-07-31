@@ -53,7 +53,7 @@ defmodule ChatRoom do
   end
 
   @impl true
-  def handle_cast({:send_message, message = %MultiRoomChat.Message{sender: sender, content: content, timestamp: timestamp}}, state) do
+  def handle_cast({:send_message, message = %MultiRoomChat.Message{sender: sender}}, state) do
     if (sender in state.users) do
       formatted = MultiRoomChat.Message.format(message)
       IO.puts(formatted)
