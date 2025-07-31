@@ -1,8 +1,8 @@
 defmodule ChatRoom do
   use GenServer
   ## Public API
-  def start_link(name) do
-    GenServer.start_link(__MODULE__, name, name: name)
+  def start_link({name, description}) do
+    GenServer.start_link(__MODULE__, {name, description}, name: name)
   end
 
   def join(room, user) do
@@ -27,8 +27,8 @@ defmodule ChatRoom do
 
   ## Callbacks
   @impl true
-  def init(room_name) do
-    {:ok, %{name: room_name, messages: [], users: []}}
+  def init({room_name, description}) do
+    {:ok, %{name: room_name, messages: [], users: [], description: description}}
   end
 
   @impl true
@@ -57,10 +57,21 @@ defmodule ChatRoom do
     if (sender in state.users) do
       formatted = MultiRoomChat.Message.format(message)
       IO.puts(formatted)
+      # TODO Store the message not the formatted string
       new_state = %{state | messages: [formatted | state.messages]}
       {:noreply, new_state}
     else
       {:noreply, state}
     end
+  end
+
+  @impl true
+  def handle_call(:get_users, _from, state) do
+    {:reply, state.users, state}
+  end
+
+  @impl true
+  def handle_call(:get_messages, _from, state) do
+    {:reply, state.messages, state}
   end
 end

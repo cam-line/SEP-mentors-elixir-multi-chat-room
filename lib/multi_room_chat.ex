@@ -9,11 +9,14 @@ defmodule MultiRoomChat do
     bob = MultiRoomChat.User.new("Bob")
 
     # Start a chat room
-    {:ok, room} = ChatRoom.start_link(:demo_room)
+    {:ok, room} = ChatRoom.start_link({:demo_room, "Demo room for fun!"})
 
     # Users join the room
     ChatRoom.join(room, alice)
     ChatRoom.join(room, bob)
+    for user <- ChatRoom.get_users(room) do
+      IO.puts("User: #{user.name}")
+    end
 
     # Send messages
     now = DateTime.utc_now()
@@ -22,5 +25,8 @@ defmodule MultiRoomChat do
     ChatRoom.send_message(room, msg1)
     ChatRoom.send_message(room, msg2)
 
+    for message <- ChatRoom.get_messages(room) do
+      IO.puts("Message: #{message}")
+    end
   end
 end
