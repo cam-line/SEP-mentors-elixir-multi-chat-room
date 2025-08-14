@@ -10,7 +10,7 @@ alias MultiRoomChat.Message
     bob = MultiRoomChat.User.new("Bob")
 
     # Start a chat room
-    {:ok, room} = ChatRoom.start_link({:demo_room, "Demo room for fun!"})
+    {:ok, room} = ChatRoom.start_link({"demo_room", "Demo room for fun!"})
 
     # Users join the room
     ChatRoom.join(room, alice.name)
