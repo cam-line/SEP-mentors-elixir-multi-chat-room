@@ -25,6 +25,10 @@ defmodule ChatRoom do
     GenServer.call(room, :get_messages)
   end
 
+  def get_description(room) do
+    GenServer.call(room, :get_description)
+  end
+
   ## Callbacks
   @impl true
   def init({room_name, description}) do
@@ -58,7 +62,7 @@ defmodule ChatRoom do
       formatted = MultiRoomChat.Message.format(message)
       IO.puts(formatted)
       # TODO Store the message not the formatted string
-      new_state = %{state | messages: [formatted | state.messages]}
+      new_state = %{state | messages: [message | state.messages]}
       {:noreply, new_state}
     else
       {:noreply, state}
@@ -73,5 +77,10 @@ defmodule ChatRoom do
   @impl true
   def handle_call(:get_messages, _from, state) do
     {:reply, state.messages, state}
+  end
+
+  @impl true
+  def handle_call(:get_description, _from, state) do
+    {:reply, state.description, state}
   end
 end

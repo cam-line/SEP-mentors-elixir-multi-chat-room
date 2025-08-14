@@ -11,12 +11,12 @@ defmodule MultiRoomChat.Message do
   ]
 
   @type t :: %__MODULE__{
-    sender: MultiRoomChat.User.t(),
+    sender: String.t(), #MultiRoomChat.User.t(),
     content: String.t(),
     timestamp: DateTime.t()
   }
 
-  def format(%__MODULE__{sender: %MultiRoomChat.User{name: name}, content: c, timestamp: t}) do
+  def format(%__MODULE__{sender: name, content: c, timestamp: t}) do
     "[#{t}] #{name}: #{c}"
   end
 end
