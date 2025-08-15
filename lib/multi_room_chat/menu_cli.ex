@@ -21,13 +21,13 @@ defmodule MultiRoomChat.CLI do
     1. List available rooms
     2. List joined rooms
     3. Create room
-    Q. Quit
+    q. Quit
     """)
     case IO.gets("Choose an option: ") |> String.trim() do
       "1" -> list_rooms(user)
       "2" -> list_my_rooms(user)
       "3" -> create_room(user)
-      "Q" -> quit()
+      "q" -> quit()
       _ -> IO.puts("Invalid option :("); main_menu(user)
     end
   end

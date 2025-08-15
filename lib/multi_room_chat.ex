@@ -1,7 +1,12 @@
 defmodule MultiRoomChat do
-  @moduledoc """
-  Simple demo for creating a room, joining with two users, and sending messages.
+    @moduledoc """
+  Entry point for the MultiRoomChat application.
+  Starts the interactive menu CLI.
   """
+
+  def start do
+    MultiRoomChat.CLI.start()
+  end
 
   def run_demo do
     # Create users
