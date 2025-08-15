@@ -1,4 +1,4 @@
-defmodule ChatRoom do
+defmodule MultiRoomChat.ChatRoom do
   use GenServer
   ## Public API
   def start_link({name, description}) do
