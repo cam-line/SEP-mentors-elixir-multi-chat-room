@@ -9,6 +9,10 @@ defmodule MultiRoomChat.RoomDirectory do
     GenServer.call(__MODULE__, :list_rooms)
   end
 
+  def get_room(name) do
+    GenServer.call(__MODULE__, {:get_room, name})
+  end
+
   def create_room(owner, name, description) do
     GenServer.call(__MODULE__, {:create_room, owner, name, description})
   end
@@ -22,6 +26,12 @@ defmodule MultiRoomChat.RoomDirectory do
   @impl true
   def handle_call(:list_rooms, _from, state) do
     {:reply, Map.values(state), state}
+  end
+
+
+  @impl true
+  def handle_call({:get_room, name}, _from, state) do
+    {:reply, Map.get(state, name), state}
   end
 
   @impl true
