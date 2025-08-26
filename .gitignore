@@ -21,3 +21,6 @@ multi_room_chat-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+DESIGN.md
+copilot-instructions.md
