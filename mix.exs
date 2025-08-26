@@ -15,7 +15,7 @@ defmodule MultiRoomChat.MixProject do
   def application do
     [
       mod: {MultiRoomChat.Application, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger, :observer, :runtime_tools, :wx]
     ]
   end
 

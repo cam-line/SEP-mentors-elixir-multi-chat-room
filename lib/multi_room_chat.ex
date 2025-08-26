@@ -1,5 +1,5 @@
 defmodule MultiRoomChat do
-    @moduledoc """
+  @moduledoc """
   Entry point for the MultiRoomChat application.
   Starts the interactive menu CLI.
   """

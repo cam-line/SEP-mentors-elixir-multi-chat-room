@@ -1,0 +1,34 @@
+@startuml supervision_tree
+!theme plain
+
+' Top-level supervisor
+
+' RoomsSupervisor dynamically supervises ChatRoomSupervisors
+
+
+@startuml supervision_tree
+!theme plain
+
+class MultiRoomChat.Supervisor
+class MultiRoomChat.Server
+class MultiRoomChat.UserRegistry
+class RoomRegistry
+class MultiRoomChat.RoomsSupervisor
+class MultiRoomChat.ChatRoomSupervisor
+class MultiRoomChat.ChatRoomServer
+' class MultiRoomChat.WorkerSupervisor
+' class MultiRoomChat.ChatRoomWorker
+
+MultiRoomChat.Supervisor --> MultiRoomChat.Server
+MultiRoomChat.Supervisor --> MultiRoomChat.UserRegistry
+MultiRoomChat.Supervisor --> MultiRoomChat.RoomsSupervisor
+
+MultiRoomChat.RoomsSupervisor --> MultiRoomChat.ChatRoomSupervisor : dynamic
+MultiRoomChat.RoomsSupervisor --> RoomRegistry
+MultiRoomChat.ChatRoomSupervisor --> MultiRoomChat.ChatRoomServer
+' MultiRoomChat.ChatRoomSupervisor --> MultiRoomChat.WorkerSupervisor
+' MultiRoomChat.WorkerSupervisor --> MultiRoomChat.ChatRoomWorker : pool
+
+@enduml
+
+@enduml
