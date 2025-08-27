@@ -9,8 +9,13 @@ defmodule MultiRoomChat.Server do
 
   # Scaffolding for room creation/joining using RoomDirectory
   def create_room(user, room_name, description) do
-    # TODO: Implement room creation logic using RoomDirectory and RoomsSupervisor
-    room_config = %{name: room_name, owner: user, description: description}
+    # Use ChatRoomDescription struct for room config
+    room_config = %MultiRoomChat.ChatRoomDescription{
+      name: room_name,
+      owner: user,
+      description: description,
+      users: []
+    }
     MultiRoomChat.RoomDirectory.create_room(room_config)
   end
 

@@ -44,11 +44,11 @@ defmodule MultiRoomChat.RoomDirectory do
   end
 
   @impl true
-  def handle_call({:create_room, room_config}, _from, state) do
+  def handle_call({:create_room, %MultiRoomChat.ChatRoomDescription{} = room_config}, _from, state) do
     {:ok, _room_sup} = Supervisor.start_child(MultiRoomChat.RoomsSupervisor,
-    supervisor_spec(room_config))
+      supervisor_spec(room_config))
     pid = Process.whereis(String.to_atom(room_config.name))
-    new_room = %{pid: pid, description: room_config.description, owner: room_config.owner}
+    new_room = %{pid: pid, description: room_config.description, owner: room_config.owner, users: room_config.users}
     {:reply, :ok, Map.put(state, room_config.name, new_room)}
   end
 
@@ -56,7 +56,7 @@ defmodule MultiRoomChat.RoomDirectory do
   ## Private
   defp supervisor_spec(room_config) do
     %{
-      id: String.to_atom("#{room_config[:name]}Supervisor"),
+      id: String.to_atom("#{room_config.name}Supervisor"),
       start: {MultiRoomChat.ChatRoomSupervisor, :start_link, [room_config]}
     }
   end
