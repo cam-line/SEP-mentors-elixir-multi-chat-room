@@ -1,16 +1,15 @@
 defmodule MultiRoomChat.Supervisor do
   use Supervisor
 
-  def start_link(rooms_config) do
-    Supervisor.start_link(__MODULE__, rooms_config, name: __MODULE__)
+  def start_link(_args) do
+    Supervisor.start_link(__MODULE__, _args, name: __MODULE__)
   end
 
-  def init(rooms_config) do
+  def init(_init_arg) do
     children = [
       {MultiRoomChat.RoomsSupervisor, []},
       {MultiRoomChat.Server}
       # {MultiRoomChat.UserRegistry, []},
-      # {Registry, keys: :unique, name: MultiRoomChat.RoomRegistry}
     ]
 
     opts = [strategy: :one_for_all]

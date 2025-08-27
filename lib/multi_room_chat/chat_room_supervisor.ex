@@ -7,7 +7,7 @@ defmodule MultiRoomChat.ChatRoomSupervisor do
 
   def init(room_config) do
     children = [
-      {MultiRoomChat.ChatRoomServer, [self(), room_config]}
+      {MultiRoomChat.ChatRoomServer, room_config}
     ]
     opts = [strategy: :one_for_all]
     Supervisor.init(children, opts)

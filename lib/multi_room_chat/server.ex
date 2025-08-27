@@ -1,43 +1,31 @@
 defmodule MultiRoomChat.Server do
   use GenServer
-  import Supervisor.Spec
+
   ## API
-  def start_link(rooms_config) do
-    GenServer.start_link(__MODULE__, rooms_config, name: __MODULE__)
+  def start_link(_opts \\ []) do
+    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
-  def checkout(room_name) do
-    GenServer.call(:"#{room_name}Server", :checkout)
+
+  # Scaffolding for room creation/joining using RoomDirectory
+  def create_room(user, room_name, description) do
+    # TODO: Implement room creation logic using RoomDirectory and RoomsSupervisor
+    room_config = %{name: room_name, owner: user, description: description}
+    MultiRoomChat.RoomDirectory.create_room(room_config)
   end
 
-  def checkin(room_name, worker_pid) do
-    GenServer.call(:"#{room_name}Server", {:checkin, worker_pid})
+  def join_room(_user, _room_name) do
+    # TODO: Implement join logic, lookup via RoomDirectory
+    :ok
   end
 
-  def status(room_name) do
-    GenServer.call(:"#{room_name}Server", :status)
+  def list_rooms() do
+    # TODO: Return list of rooms from RoomDirectory
+    MultiRoomChat.RoomDirectory.list_rooms()
   end
 
   ## Callbacks
-  def init(rooms_config) do
-    rooms_config |> Enum.each(fn(room_config) ->
-      send(self(), {:start_room, room_config})
-    end)
-
-    {:ok, rooms_config}
-  end
-
-  def handle_info({:start_room, room_config}, state) do
-    {:ok, _room_sup} = Supervisor.start_child(MultiRoomChat.RoomsSupervisor,
-    supervisor_spec(room_config))
-    {:noreply, state}
-  end
-
-  ## Private
-  defp supervisor_spec(room_config) do
-    %{
-      id: String.to_atom("#{room_config[:name]}Supervisor"),
-      start: {MultiRoomChat.ChatRoomSupervisor, :start_link, [room_config]}
-    }
+  def init(_state) do
+    {:ok, %{}}
   end
 end

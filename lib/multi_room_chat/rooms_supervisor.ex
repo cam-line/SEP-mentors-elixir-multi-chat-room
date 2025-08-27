@@ -6,9 +6,10 @@ defmodule MultiRoomChat.RoomsSupervisor do
   end
 
   def init(_) do
-    opts = [
-      strategy: :one_for_one
-    ]
-    Supervisor.init([], opts)
+      children = [
+        MultiRoomChat.RoomDirectory
+      ]
+      opts = [strategy: :one_for_one]
+      Supervisor.init(children, opts)
   end
 end
